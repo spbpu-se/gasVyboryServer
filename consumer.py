@@ -6,7 +6,7 @@ topics = ["vrn", "vrn_oik", "vrn_oik_uik", "vrn_candidate"]
 envir = os.environ
 
 try:
-    client = MongoClient(envir["mongo_ip"], envir["mongo_port"], username=envir["mongo_usr"], password=envir["mongo_pwd"])
+    client = MongoClient(envir["mongo_ip"], int(envir["mongo_port"]), username=envir["mongo_usr"], password=envir["mongo_pwd"])
     db = client.gas_vybory
     print("Connected successfully!")
 except:
