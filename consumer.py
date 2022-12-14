@@ -12,7 +12,7 @@ try:
 except:
     print("Could not connect to MongoDB")
 
-server = envir["mongo_ip"] + str(":") + envir["kafka_port"])
+server = envir["mongo_ip"] + str(":") + envir["kafka_port"]
 consumer = KafkaConsumer(*topics, bootstrap_servers=server)
 for msg in consumer:
     if msg.topic == "vrn":
