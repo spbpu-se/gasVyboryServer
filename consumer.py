@@ -12,7 +12,8 @@ try:
 except:
     print("Could not connect to MongoDB")
 
-consumer = KafkaConsumer(*topics, bootstrap_servers=['localhost:9092'])
+server = list(envir["mongo_ip"] + str(:) + envir["kafka_port"])
+consumer = KafkaConsumer(*topics, bootstrap_servers=server)
 for msg in consumer:
     if msg.topic == "vrn":
         record = json.loads(msg.value)
