@@ -5,7 +5,7 @@ import json
 topics = ["vrn", "vrn_oik", "vrn_oik_uik", "vrn_candidate"]
 
 try:
-    client = MongoClient('localhost', 27017)
+    client = MongoClient('localhost', 27017, username="admin", password="admin")
     db = client.gas_vybory
     print("Connected successfully!")
 except:
