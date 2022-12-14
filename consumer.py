@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from pymongo import MongoClient
 import json
-
+import os 
 topics = ["vrn", "vrn_oik", "vrn_oik_uik", "vrn_candidate"]
 envir = os.environ
 
