@@ -3,9 +3,10 @@ from pymongo import MongoClient
 import json
 
 topics = ["vrn", "vrn_oik", "vrn_oik_uik", "vrn_candidate"]
+envir = os.environ
 
 try:
-    client = MongoClient('localhost', 27017, username="admin", password="admin")
+    client = MongoClient(envir["mongo_ip"], envir["mongo_port"], username=envir["mongo_usr"], password=envir["mongo_pwd"])
     db = client.gas_vybory
     print("Connected successfully!")
 except:
