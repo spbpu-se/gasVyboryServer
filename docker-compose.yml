@@ -1,0 +1,75 @@
+version: "3.5"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "0.0.0.0:27017:27017"
+    networks:
+      - intranet
+    volumes:
+      - type: volume
+        source: mongo_data
+        target: /data/db
+      - type: volume
+        source: mongo_config
+        target: /data/configdb
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express-container
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: "27017"
+    ports:
+      - "0.0.0.0:8081:8081"
+    networks:
+      - intranet
+    depends_on:
+      - mongo
+
+  elasticsearch:
+    container_name: es-container
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data:Z
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - intranet
+    ports:
+      - 9200:9200
+
+  kibana:
+    container_name: kb-container
+    image: docker.elastic.co/kibana/kibana:7.11.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es-container:9200
+    networks:
+      - intranet
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+
+networks:
+  intranet:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    name: mongo_data
+  mongo_config:
+    name: mongo_config
+  es_data:
+    name: es_data
